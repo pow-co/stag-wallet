@@ -6,3 +6,5 @@ export { Client } from './client'
 export { TestClient } from './test_client'
 export { getBitcore } from './bitcore'
 export { Actor } from './actor'
+import * as onchain from './onchain'
+export { onchain }

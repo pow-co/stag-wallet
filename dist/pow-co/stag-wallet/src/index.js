@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Actor = exports.getBitcore = exports.TestClient = exports.Client = exports.Currencies = exports.loadWallet = exports.Wallet = void 0;
+exports.onchain = exports.Actor = exports.getBitcore = exports.TestClient = exports.Client = exports.Currencies = exports.loadWallet = exports.Wallet = void 0;
 var wallet_1 = require("./wallet");
 Object.defineProperty(exports, "Wallet", { enumerable: true, get: function () { return wallet_1.Wallet; } });
 Object.defineProperty(exports, "loadWallet", { enumerable: true, get: function () { return wallet_1.loadWallet; } });
@@ -14,3 +14,5 @@ var bitcore_1 = require("./bitcore");
 Object.defineProperty(exports, "getBitcore", { enumerable: true, get: function () { return bitcore_1.getBitcore; } });
 var actor_1 = require("./actor");
 Object.defineProperty(exports, "Actor", { enumerable: true, get: function () { return actor_1.Actor; } });
+const onchain = require("./onchain");
+exports.onchain = onchain;
