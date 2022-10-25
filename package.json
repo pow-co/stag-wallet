@@ -1,6 +1,6 @@
 {
   "name": "stag-wallet",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "dist/pow-co/stag-wallet/src",
   "scripts": {
@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "anypay": "^0.1.0",
     "bignumber.js": "^9.1.0",
     "bsv-2": "npm:bsv@^2.0.10",
     "bsv-coinselect": "^4.2.5",
