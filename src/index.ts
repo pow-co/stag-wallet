@@ -9,3 +9,6 @@ export { Actor } from './actor'
 import * as onchain from './onchain'
 export { onchain }
 export { pay } from './pay'
+import * as protocol from './protocol'
+export { protocol }
+
