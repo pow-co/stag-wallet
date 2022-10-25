@@ -809,6 +809,8 @@ var putFile = async (request, callback) => {
  * @param {*} callback
  */
 var queueFile = async (request, callback) => {
+
+    //@ts-ignore
   var formData = new FormData();
     //@ts-ignore
   formData.append("file", Buffer.from(request.data, request.encoding));

@@ -1,8 +1,8 @@
 {
   "name": "stag-wallet",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
-  "main": "src/index.ts",
+  "main": "dist/pow-co/stag-wallet/src",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,7 +13,9 @@
     "bignumber.js": "^9.1.0",
     "bsv-2": "npm:bsv@^2.0.10",
     "bsv-coinselect": "^4.2.5",
+    "commander": "^9.4.1",
     "dotenv": "^16.0.3",
+    "joi": "^17.6.4",
     "mingo": "^6.1.2",
     "nconf": "^0.12.0",
     "require-all": "^3.0.0",

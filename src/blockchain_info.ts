@@ -1,10 +1,10 @@
 
 
-import { Utxo } from './simple-wallet/src/wallet'
+import { Utxo } from './wallet'
 
 import config from './config'
 
-import axios from 'axios'
+const axios = require('axios')
 
 import { log } from './log'
 
