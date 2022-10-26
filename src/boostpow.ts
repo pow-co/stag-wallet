@@ -5,6 +5,8 @@ import { BoostPowJob } from 'boostpow'
 
 import { broadcast } from 'powco'
 
+const axios = require('axios')
+
 interface NewBoostJob {
   content: string;
   difficulty: number;
@@ -53,6 +55,8 @@ export async function boostpow(params: NewBoostJob) {
   }, 'BSV')
 
   const result = await broadcast(payment)
+
+  axios.get(`http://pow.co/api/v1/boost/jobs/${result}`)
 
   return BoostPowJob.fromRawTransaction(payment)
 
