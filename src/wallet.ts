@@ -250,18 +250,37 @@ export class Wallet {
 
     for (let output of instructions[0].outputs) {
 
-      let address = bitcore.Address.fromString(output.address)
+      // TODO: Support Script Instead of Address
 
-      let script = bitcore.Script.fromAddress(address)
+      if (output.address) {
 
-      tx.addOutput(
-        bitcore.Transaction.Output({
-          satoshis: output.amount,
-          script: script.toHex()
-        })
-      )
+        let address = bitcore.Address.fromString(output.address)
 
-      totalOutput += output.amount
+        let script = bitcore.Script.fromAddress(address)
+
+        tx.addOutput(
+          bitcore.Transaction.Output({
+            satoshis: output.amount,
+            script: script.toHex()
+          })
+        )
+
+        totalOutput += output.amount
+
+      } else if (output.script) {
+
+        let script = bitcore.Script(output.script)
+
+        tx.addOutput(
+          bitcore.Transaction.Output({
+            satoshis: output.amount,
+            script: script.toHex()
+          })
+        )
+
+        totalOutput += output.amount
+
+      }
 
     }
 
