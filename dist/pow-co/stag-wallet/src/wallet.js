@@ -150,13 +150,24 @@ class Wallet {
                 return sum.plus(satoshis);
             }, new bignumber_js_1.default(0)).toNumber();
             for (let output of instructions[0].outputs) {
-                let address = bitcore.Address.fromString(output.address);
-                let script = bitcore.Script.fromAddress(address);
-                tx.addOutput(bitcore.Transaction.Output({
-                    satoshis: output.amount,
-                    script: script.toHex()
-                }));
-                totalOutput += output.amount;
+                // TODO: Support Script Instead of Address
+                if (output.address) {
+                    let address = bitcore.Address.fromString(output.address);
+                    let script = bitcore.Script.fromAddress(address);
+                    tx.addOutput(bitcore.Transaction.Output({
+                        satoshis: output.amount,
+                        script: script.toHex()
+                    }));
+                    totalOutput += output.amount;
+                }
+                else if (output.script) {
+                    let script = bitcore.Script(output.script);
+                    tx.addOutput(bitcore.Transaction.Output({
+                        satoshis: output.amount,
+                        script: script.toHex()
+                    }));
+                    totalOutput += output.amount;
+                }
             }
             if (totalInput < totalOutput) {
                 log_1.default.info('InsufficientFunds', {
