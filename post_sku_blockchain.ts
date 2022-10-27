@@ -5,7 +5,7 @@ import { loadWallet } from './src'
 
 import { v4 as uuid } from 'uuid'
 
-import { Actor } from './src/actor'
+import { onchain } from './src'
 
 ;(async () => {
 
@@ -17,26 +17,15 @@ import { Actor } from './src/actor'
   
       const app = 'linestar.tech.alpha'
   
-      const [balance] = await wallet.balances()
-  
-      console.log("wallet.balance", `${balance.value} sats = $${balance.value_usd}`)
-  
-      const wif = String(process.env.BSV_PRIVATE_KEY)
-  
-      const actor = new Actor({
-        wallet
-      })
-      
-      const actorPublishResult = await actor.publishMessage(({
+      const result = await onchain.post({
         app,
-        event: 'sku',
-        payload: {
+        key: 'sku',
+        val: {
           sku: uuid()
         },
-        nonce: uuid()
-      }))
+      })
   
-      console.log('actorPublicResult', actorPublishResult)
+      console.log('onchain.post.result', result)
 
     } catch(error) {
 

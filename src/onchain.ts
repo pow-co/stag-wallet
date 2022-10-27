@@ -126,6 +126,18 @@ const onchain = (wallet?: Wallet) => {
 
       const txo = await fromTx(txhex)
 
+      axios.get(`https://onchain.sv/api/v1/events/${txid}`)
+        .then((result) => {
+
+          log.debug('onchain.sv.import.success', result.data)
+
+        })
+        .catch((error) => {
+
+          log.error('onchain.sv.import.error', error)
+
+        })
+
       return {
         txid,
         txhex,
