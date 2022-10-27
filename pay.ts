@@ -1,9 +1,9 @@
 
-import { pay } from './src'
+import { pay } from '.'
 
 export async function start() {
 
-  const url = 'https://api.anypayx.com/r/uh83lFFhE'
+  const url = 'https://api.anypayx.com/r/Fu83roATP'
 
   const result = await pay(url)
 

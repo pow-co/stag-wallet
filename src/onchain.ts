@@ -11,6 +11,10 @@ import { fromTx, Txo } from 'txo'
 
 import { loadWallet, Wallet } from './wallet'
 
+import { log } from './log'
+
+const axios = require('axios')
+
 interface OnchainPostParams {
   app: string;
   key: string;
@@ -33,9 +37,65 @@ export async function post(params: OnchainPostParams) {
 
 }
 
+export async function findOne(params: any) {
+
+  return onchain().findOne(params)
+
+}
+
+interface FindOne {
+  app?: string;
+  type?: string;
+  content?: any;
+  author?: string;
+}
+
 const onchain = (wallet?: Wallet) => {
 
   return {
+
+    findOne: async(params: FindOne) => {
+
+      const where = {}
+
+      if (params.app) { where['app'] = params.app }
+
+      if (params.author) { where['author'] = params.author }
+
+      if (params.type) { where['type'] = params.type }
+
+      if (params.content) {
+
+        Object.keys(params.content).forEach(key => {
+
+          params[key] = params.content[key]
+
+        })
+
+        delete params.content
+
+      }
+
+      const query = new URLSearchParams(where).toString()
+
+      const url = `https://onchain.sv/api/v1/events?${query}`
+
+      log.debug('onchain.sv.events.get', { url })
+
+      const { data } = await axios.get(url)
+
+      log.debug('onchain.sv.events.get.result', { url, data })
+
+      const [event] = data.events
+
+      if (!event) {
+
+        return
+      }
+
+      return event
+
+    },
 
     post: async (params: OnchainPostParams) => {
 
