@@ -7,13 +7,13 @@ async function start() {
 
     author: '18h6yhKBBqXQge6XRauMTeEaQ9HF4jR1qV',
 
-    app: 'alpha-0.linestar.tech',
+    app: 'linestar.tech.alpha',
 
-    type: 'product',
+    type: 'sku',
 
     content: {
 
-      sku: '01827391'
+      sku: '7374af28-f613-40ab-8f4b-3932bef6b0df'
 
     }
 

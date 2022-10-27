@@ -47,7 +47,7 @@ const onchain = (wallet) => {
             }
             if (params.content) {
                 Object.keys(params.content).forEach(key => {
-                    params[key] = params.content[key];
+                    where[key] = params.content[key];
                 });
                 delete params.content;
             }

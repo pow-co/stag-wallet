@@ -68,7 +68,7 @@ const onchain = (wallet?: Wallet) => {
 
         Object.keys(params.content).forEach(key => {
 
-          params[key] = params.content[key]
+          where[key] = params.content[key]
 
         })
 
