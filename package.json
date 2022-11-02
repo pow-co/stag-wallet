@@ -1,6 +1,6 @@
 {
   "name": "stag-wallet",
-  "version": "0.0.11",
+  "version": "0.1.0",
   "description": "",
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "dotenv": "^16.0.3",
     "joi": "^17.6.4",
     "mingo": "^6.1.2",
+    "mui": "^0.0.1",
     "nconf": "^0.12.0",
     "powco": "^1.2.0",
     "require-all": "^3.0.0",

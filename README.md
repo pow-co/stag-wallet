@@ -8,10 +8,10 @@ npm install --save stag-wallet
 ```
 ## Configure Wallet
 
-To configure the wallet simply provide `BSV_PRIVATE_KEY` environment variable
+To configure the wallet simply provide `stag_private_key` environment variable
 
 ```
-export BSV_PRIVATE_KEY=KzuhQNi7gQJ3ThGi7C7YMQvjfScLWBCZ7PMb8RmpwJEYHv1JWd4G
+export stag_private_key=KzuhQNi7gQJ3ThGi7C7YMQvjfScLWBCZ7PMb8RmpwJEYHv1JWd4G
 
 ```
 
@@ -36,8 +36,8 @@ import { boostpow } from 'stag-wallet'
 const job = await boostpow({
   content: '2b7371657d34652255a276331ac89e46a82cf58693a8e6aaafcbaacfce132cd0',
   difficulty: 0.1,
-  tag: 'askbitcoin.question',
-  category: 'ASK',
+  tag: 'boostpow.com',
+  category: 'art',
   satoshis: 52_000
 })
 

@@ -12,8 +12,6 @@ import { onchain } from './src'
   for (let i=0; i<10; i++) {
 
     try {
-
-      const wallet = await loadWallet()
   
       const app = 'linestar.tech.alpha'
   

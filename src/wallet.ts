@@ -485,7 +485,21 @@ export async function loadWallet(loadCards?: LoadCard[]) {
     
   } else {
 
-    if (process.env.BSV_PRIVATE_KEY) {
+    if (process.env.stag_private_key) {
+
+      cards.push(new Card({
+        asset: 'BSV',
+        privatekey: process.env.stag_private_key
+      }))
+
+    } else if (process.env.STAG_PRIVATE_KEY) {
+
+      cards.push(new Card({
+        asset: 'BSV',
+        privatekey: process.env.STAG_PRIVATE_KEY
+      }))
+  
+    } else if (process.env.BSV_PRIVATE_KEY) {
 
       cards.push(new Card({
         asset: 'BSV',
@@ -493,6 +507,8 @@ export async function loadWallet(loadCards?: LoadCard[]) {
       }))
 
     }
+
+
 
   }
 

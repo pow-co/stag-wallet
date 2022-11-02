@@ -1,7 +1,7 @@
 
 import * as bsv from 'bsv'
 
-import { Actor } from './actor'
+import { Actor } from './bitcoin_schema_actor'
 
 import { v4 as uuid } from 'uuid'
 

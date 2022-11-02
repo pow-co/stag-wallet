@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.findOne = exports.post = void 0;
 const bsv = require("bsv");
-const actor_1 = require("./actor");
+const bitcoin_schema_actor_1 = require("./bitcoin_schema_actor");
 const uuid_1 = require("uuid");
 const powco_1 = require("powco");
 const txo_1 = require("txo");
@@ -66,7 +66,7 @@ const onchain = (wallet) => {
             if (!wallet) {
                 wallet = yield (0, wallet_1.loadWallet)();
             }
-            const actor = new actor_1.Actor({
+            const actor = new bitcoin_schema_actor_1.Actor({
                 wallet
             });
             const message = {
