@@ -194,8 +194,6 @@ export class Wallet {
 
     let wallet = this.asset(asset)
 
-    let balance = await wallet.balance()
-
     await wallet.listUnspent()
 
     let bitcore = getBitcore(asset)

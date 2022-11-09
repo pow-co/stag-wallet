@@ -114,7 +114,6 @@ class Wallet {
         return __awaiter(this, void 0, void 0, function* () {
             let { instructions } = paymentRequest;
             let wallet = this.asset(asset);
-            let balance = yield wallet.balance();
             yield wallet.listUnspent();
             let bitcore = (0, bitcore_1.getBitcore)(asset);
             let privatekey = new bitcore.PrivateKey(wallet.privatekey);
