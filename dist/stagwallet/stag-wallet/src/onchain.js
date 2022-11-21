@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findOne = exports.post = void 0;
+exports.findOrCreate = exports.findOne = exports.post = void 0;
 const bsv = require("bsv");
 const actor_1 = require("./actor");
 const uuid_1 = require("uuid");
@@ -32,9 +32,15 @@ function findOne(params) {
     });
 }
 exports.findOne = findOne;
+function findOrCreate(params) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return onchain().findOrCreate(params);
+    });
+}
+exports.findOrCreate = findOrCreate;
 const onchain = (wallet) => {
-    return {
-        findOne: (params) => __awaiter(void 0, void 0, void 0, function* () {
+    function findOne(params) {
+        return __awaiter(this, void 0, void 0, function* () {
             const where = {};
             if (params.app) {
                 where['app'] = params.app;
@@ -61,8 +67,10 @@ const onchain = (wallet) => {
                 return;
             }
             return event;
-        }),
-        post: (params) => __awaiter(void 0, void 0, void 0, function* () {
+        });
+    }
+    function post(params) {
+        return __awaiter(this, void 0, void 0, function* () {
             if (!wallet) {
                 wallet = yield (0, wallet_1.loadWallet)();
             }
@@ -93,7 +101,29 @@ const onchain = (wallet) => {
                 txo,
                 tx: new bsv.Transaction(txhex)
             };
-        })
+        });
+    }
+    function findOrCreate(params) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var isNew = true;
+            var result = yield findOne(params.where);
+            if (result) {
+                isNew = false;
+            }
+            if (!result) {
+                yield post(params.defaults);
+            }
+            result = yield findOne(params.where);
+            if (!result) {
+                throw new Error('Failed To Find Or Create');
+            }
+            return [result, isNew];
+        });
+    }
+    return {
+        findOne,
+        findOrCreate,
+        post
     };
 };
 exports.default = onchain;

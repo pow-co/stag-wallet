@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loadWallet = exports.Card = exports.Wallet = exports.UnsufficientFundsError = void 0;
+exports.loadWallet = exports.fromBackupSeedPhrase = exports.Card = exports.Wallet = exports.UnsufficientFundsError = void 0;
 require('dotenv').config();
 const rpc_1 = require("./rpc");
 const config_1 = require("./config");
@@ -288,6 +288,28 @@ class Card {
     }
 }
 exports.Card = Card;
+const bsv = require('bsv');
+const { Bip39 } = require('bsv-2');
+function fromBackupSeedPhrase(mnemonic) {
+    const seed = Bip39.fromString(mnemonic).toSeed().toString('hex');
+    const hdPrivateKey = bsv.HDPrivateKey.fromSeed(seed);
+    const bsvKey = hdPrivateKey.deriveChild(`m/44'/236'/0'/0/0`).privateKey;
+    const changeKey = hdPrivateKey.deriveChild(`m/44'/236'/0'/1/0`).privateKey;
+    const runKey = hdPrivateKey.deriveChild(`m/44'/236'/0'/2/0`).privateKey;
+    const cancelKey = hdPrivateKey.deriveChild(`m/44'/236'/0'/3/0`).privateKey;
+    const paymailKey = hdPrivateKey.deriveChild(`m/0'/236'/0'/0/0`).privateKey;
+    return new Wallet({
+        cards: [
+            new Card({
+                asset: 'BSV',
+                privatekey: bsvKey,
+                mnemonic,
+                hdprivatekey: hdPrivateKey.toString()
+            })
+        ]
+    });
+}
+exports.fromBackupSeedPhrase = fromBackupSeedPhrase;
 function loadWallet(loadCards) {
     return __awaiter(this, void 0, void 0, function* () {
         let cards = [];
@@ -297,6 +319,12 @@ function loadWallet(loadCards) {
             }
         }
         else {
+            if (process.env.stag_private_key) {
+                cards.push(new Card({
+                    asset: 'BSV',
+                    privatekey: process.env.stag_private_key
+                }));
+            }
             if (process.env.BSV_PRIVATE_KEY) {
                 cards.push(new Card({
                     asset: 'BSV',

@@ -7,7 +7,17 @@ const bsv = require('bsv')
 
 const { Bip39 } = require('bsv-2')
 
+import { fromBackupSeedPhrase } from './'
+
 async function run() {
+
+  const wallet = fromBackupSeedPhrase(mnemonic)
+
+  console.log("WALLET", wallet)
+
+  const [balance] = await wallet.balances()
+
+  console.log({ balance })
 
   const seed = Bip39.fromString(mnemonic).toSeed().toString('hex')
 
@@ -45,7 +55,7 @@ async function run() {
   console.log('bsv address: ', bsvKey.toAddress().toString())
   console.log('change address: ', changeKey.toAddress().toString())
   console.log('run address: ', runKey.toAddress().toString())
-  console.log('paymail pubkey: ', runKey.publicKey.toString())
+  console.log('paymail pubkey: ', paymailKey.publicKey.toString())
 
 }
 

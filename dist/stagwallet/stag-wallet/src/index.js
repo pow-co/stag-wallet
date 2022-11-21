@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.boostpow = exports.protocol = exports.pay = exports.onchain = exports.Actor = exports.getBitcore = exports.TestClient = exports.Client = exports.Currencies = exports.loadWallet = exports.Wallet = void 0;
+exports.boostpow = exports.protocol = exports.pay = exports.onchain = exports.Actor = exports.getBitcore = exports.TestClient = exports.Client = exports.Currencies = exports.fromBackupSeedPhrase = exports.loadWallet = exports.Wallet = void 0;
 var wallet_1 = require("./wallet");
 Object.defineProperty(exports, "Wallet", { enumerable: true, get: function () { return wallet_1.Wallet; } });
 Object.defineProperty(exports, "loadWallet", { enumerable: true, get: function () { return wallet_1.loadWallet; } });
+Object.defineProperty(exports, "fromBackupSeedPhrase", { enumerable: true, get: function () { return wallet_1.fromBackupSeedPhrase; } });
 var currency_1 = require("./currency");
 Object.defineProperty(exports, "Currencies", { enumerable: true, get: function () { return currency_1.Currencies; } });
 var client_1 = require("./client");
