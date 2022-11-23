@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.run = exports.broadcast = void 0;
+exports.listTokenBalances = exports.run = exports.broadcast = void 0;
 const axios_1 = require("axios");
 function broadcast(rawtx) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -27,3 +27,10 @@ exports.broadcast = broadcast;
 const Run = require('run-sdk');
 const blockchain = new Run.plugins.WhatsOnChain({ network: 'main' });
 exports.run = new Run({ blockchain });
+function listTokenBalances(address) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { data } = yield axios_1.default.get(`https://staging-backend.relayx.com/api/user/balance2/#${address}`);
+        return data.data;
+    });
+}
+exports.listTokenBalances = listTokenBalances;

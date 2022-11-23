@@ -12,4 +12,5 @@ export { pay } from './pay'
 import * as protocol from './protocol'
 export { protocol }
 export { boostpow } from './boostpow'
+export * as run from './run'
 

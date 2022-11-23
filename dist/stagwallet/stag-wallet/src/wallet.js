@@ -203,6 +203,8 @@ class Card {
         this.asset = params.asset;
         this.privatekey = params.privatekey;
         this.address = params.address;
+        this.hdprivatekey = params.hdprivatekey;
+        this.mnemonic = params.mnemonic;
         let bitcore = (0, bitcore_1.getBitcore)(this.asset);
         if (bitcore.PrivateKey) {
             this.address = new bitcore.PrivateKey(this.privatekey).toAddress().toString();

@@ -345,6 +345,8 @@ export class Card {
     this.asset = params.asset
     this.privatekey = params.privatekey
     this.address = params.address
+    this.hdprivatekey = params.hdprivatekey
+    this.mnemonic = params.mnemonic
 
     let bitcore = getBitcore(this.asset)
 

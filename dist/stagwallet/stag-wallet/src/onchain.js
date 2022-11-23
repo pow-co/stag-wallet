@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findOrCreate = exports.findOne = exports.post = void 0;
+exports.findOrCreate = exports.findAll = exports.findOne = exports.post = void 0;
 const bsv = require("bsv");
 const actor_1 = require("./actor");
 const uuid_1 = require("uuid");
@@ -32,6 +32,12 @@ function findOne(params) {
     });
 }
 exports.findOne = findOne;
+function findAll(params) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return onchain().findAll(params);
+    });
+}
+exports.findAll = findAll;
 function findOrCreate(params) {
     return __awaiter(this, void 0, void 0, function* () {
         return onchain().findOrCreate(params);
@@ -67,6 +73,32 @@ const onchain = (wallet) => {
                 return;
             }
             return event;
+        });
+    }
+    function findAll(params) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const where = {};
+            if (params.app) {
+                where['app'] = params.app;
+            }
+            if (params.author) {
+                where['author'] = params.author;
+            }
+            if (params.type) {
+                where['type'] = params.type;
+            }
+            if (params.content) {
+                Object.keys(params.content).forEach(key => {
+                    where[key] = params.content[key];
+                });
+                delete params.content;
+            }
+            const query = new URLSearchParams(where).toString();
+            const url = `https://onchain.sv/api/v1/events?${query}`;
+            log_1.log.debug('onchain.sv.events.get', { url });
+            const { data } = yield axios.get(url);
+            log_1.log.debug('onchain.sv.events.get.result', { url, data });
+            return data.events;
         });
     }
     function post(params) {
@@ -123,7 +155,8 @@ const onchain = (wallet) => {
     return {
         findOne,
         findOrCreate,
-        post
+        post,
+        findAll
     };
 };
 exports.default = onchain;

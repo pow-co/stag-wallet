@@ -43,6 +43,12 @@ export async function findOne(params: any) {
 
 }
 
+export async function findAll(params: any) {
+
+  return onchain().findAll(params)
+
+}
+
 interface FindOrCreate {
   where: any;
   defaults: any;
@@ -59,6 +65,15 @@ interface FindOne {
   type?: string;
   content?: any;
   author?: string;
+}
+
+interface FindAll {
+  app?: string;
+  type?: string;
+  content?: any;
+  author?: string;
+  limit?: number;
+  offset?: number;
 }
 
 const onchain = (wallet?: Wallet) => {
@@ -104,6 +119,42 @@ const onchain = (wallet?: Wallet) => {
       }
 
       return event
+
+    }
+
+    async function findAll(params: FindAll): Promise<any[]> {
+
+      const where = {}
+
+      if (params.app) { where['app'] = params.app }
+
+      if (params.author) { where['author'] = params.author }
+
+      if (params.type) { where['type'] = params.type }
+
+      if (params.content) {
+
+        Object.keys(params.content).forEach(key => {
+
+          where[key] = params.content[key]
+
+        })
+
+        delete params.content
+
+      }
+
+      const query = new URLSearchParams(where).toString()
+
+      const url = `https://onchain.sv/api/v1/events?${query}`
+
+      log.debug('onchain.sv.events.get', { url })
+
+      const { data } = await axios.get(url)
+
+      log.debug('onchain.sv.events.get.result', { url, data })
+
+      return data.events
 
     }
 
@@ -189,7 +240,9 @@ const onchain = (wallet?: Wallet) => {
 
     findOrCreate,
 
-    post
+    post,
+
+    findAll
 
   }
 

@@ -27,3 +27,16 @@ export interface RunUtxo {
   script: string;
   satoshis: number;
 }
+
+interface TokenBalancesResponse {
+  balances: any;
+  metadata: any;
+}
+
+export async function listTokenBalances(address: string): Promise<TokenBalancesResponse> {
+
+  const { data } = await axios.get(`https://staging-backend.relayx.com/api/user/balance2/#${address}`)
+
+  return data.data
+
+}
