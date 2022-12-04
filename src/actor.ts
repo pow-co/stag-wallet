@@ -15,6 +15,14 @@ interface NewMessage {
   payload: any;
   nonce?: string;
 }
+
+interface SocialMessage  {
+  app: string;
+  content: string;
+  author?: string;
+  contentType?: string;
+}
+
 interface BlockchainMessage extends NewMessage {
   txid: string;
   vout: number;
@@ -30,8 +38,9 @@ interface ActorParams {
 export const authorIdentityPrefix = '15PciHG22SNLQJXMoSUaWVi7WSqc7hCfva';
 
 export class Actor {
-
+  //@ts-ignore
   purse: bsv.PrivKey;
+  //@ts-ignore
   owner: bsv.PrivKey;
   wallet: Wallet;
 
@@ -44,6 +53,52 @@ export class Actor {
   get identity() {
     return new bsv.Address().fromPrivKey(this.owner).toString()
     
+  }
+
+  publishOpReturn(opReturn: string[]): Promise<any> {
+
+    return new Promise(async (resolve, reject) => {
+
+      const unspent = await this.wallet.cards[0].listUnspent()
+
+      const inputs = unspent.map(utxo => {
+
+        return {
+            "txid": utxo.txid,
+            "value": utxo.value,
+            "script": utxo.scriptPubKey,
+            "outputIndex": utxo.vout,
+            "required": false
+        }
+      })
+
+      const params = {
+        pay:  {
+          key: this.purse.toWif(),
+          inputs,
+          to: [{
+
+            data: opReturn,
+
+            value: 0
+          }]
+        }
+      };
+
+      filepay.build(params, async (error, tx) => {
+
+        if (error) { return reject(error.response) }
+
+        const txhex = tx.serialize()
+
+        const result = await run.blockchain.broadcast(txhex)
+
+        resolve(result)
+
+      })
+
+    })
+
   }
 
   publishMessage(newMessage: NewMessage): Promise<BlockchainMessage> {
@@ -83,41 +138,69 @@ export class Actor {
         }
       })
 
-      const params = {
-        pay:  {
-          key: this.purse.toWif(),
-          inputs,
-          to: [{
+      return this.publishOpReturn([
+        'onchain.sv',
+        newMessage.app,
+        newMessage.event,
+        payloadToSign,
+        "|",
+        authorIdentityPrefix,
+        "BITCOIN_ECDSA",
+        this.identity,
+        signature,
+        0x05 // signed index #5 "payloadToSign"
+      ])
 
-            data: [
-              'onchain.sv',
-              newMessage.app,
-              newMessage.event,
-              payloadToSign,
-              "|",
-              authorIdentityPrefix,
-              "BITCOIN_ECDSA",
-              this.identity,
-              signature,
-              0x05 // signed index #5 "payloadToSign"
-            ],
+    })
 
-            value: 0
-          }]
+  }
+
+  socialMessage(newMessage: SocialMessage): Promise<BlockchainMessage> {
+
+    const defaultContentType = 'text/markdown'
+
+    const contentType = newMessage.contentType || 'text/markdown'
+
+    return new Promise(async (resolve, reject) => {
+
+      const keypair = new bsv.KeyPair().fromPrivKey(this.owner)
+
+      const payloadToSign = newMessage.content
+
+      const signature = bsv.Bsm.sign(Buffer.from(payloadToSign), keypair)
+
+      let address = new bsv.Address().fromString(this.identity)
+
+      let verified = bsv.Bsm.verify(Buffer.from(payloadToSign, 'utf8'), signature, address)
+
+      if (!verified) {
+        throw new Error('SIGNATURE NOT VERIFIED')
+      }
+
+      const unspent = await this.wallet.cards[0].listUnspent()
+
+      const inputs = unspent.map(utxo => {
+
+        return {
+            "txid": utxo.txid,
+            "value": utxo.value,
+            "script": utxo.scriptPubKey,
+            "outputIndex": utxo.vout,
+            "required": false
         }
-      };
-
-      filepay.build(params, async (error, tx) => {
-
-        if (error) { return reject(error.response) }
-
-        const txhex = tx.serialize()
-
-        const result = await run.blockchain.broadcast(txhex)
-
-        resolve(result)
-
       })
+
+      return this.publishOpReturn([
+        'B',
+        newMessage.app,
+        payloadToSign,
+        "|",
+        authorIdentityPrefix,
+        "BITCOIN_ECDSA",
+        this.identity,
+        signature,
+        0x05 // signed index #5 "payloadToSign"
+      ])
 
     })
 

@@ -24,6 +24,7 @@ interface OnchainPostParams {
 interface OnchainPostResult {
   txid: string;
   txhex: string;
+  // @ts-ignore
   tx: bsv.Transaction;
   txo: Txo;
 }

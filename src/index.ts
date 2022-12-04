@@ -13,4 +13,5 @@ import * as protocol from './protocol'
 export { protocol }
 export { boostpow } from './boostpow'
 export * as run from './run'
+export * as social from './social'
 

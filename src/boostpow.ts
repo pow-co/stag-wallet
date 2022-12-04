@@ -1,5 +1,5 @@
 
-import { loadWallet } from './wallet'
+import { loadWallet, Wallet } from './wallet'
 
 import { BoostPowJob } from 'boostpow'
 
@@ -15,7 +15,7 @@ interface NewBoostJob {
   satoshis: number;
 }
 
-export async function boostpow(params: NewBoostJob) {
+export async function boostpow(params: NewBoostJob, wallet?: Wallet) {
 
   const newJob = {
     content: params.content,
@@ -36,7 +36,11 @@ export async function boostpow(params: NewBoostJob) {
 
   const script = job.toScript().toHex()
 
-  const wallet = await loadWallet()
+  if (!wallet) {
+
+    wallet = await loadWallet()
+    
+  }
   
   const payment = await wallet.buildPayment({
 
