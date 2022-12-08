@@ -50,10 +50,31 @@ import { onchain } from 'stag-wallet'
 
 const { txid, txhex, txo } = await onchain.post({
   app: 'askbitcoin.ai,
-  key: 'question',
-  val: {
+  type: 'question',
+  content: {
     content: 'Which midasvalley.net domain will be most valuable over the next month?'
   }
+})
+
+// or 
+
+const { txid, txhex, txo } = await onchain.findOrCreate({
+
+  where: {
+    app: 'www',
+    type: 'resource',
+    content: {
+      url: 'https://www.infowars.com/posts/dave-chappelle-tricked-snl-producers-by-giving-them-fake-monologue-during-dress-rehearsal/'
+    }
+  },
+  defaults: {
+    app: 'www',
+    type: 'resource',
+    content: {
+      url: 'https://www.infowars.com/posts/dave-chappelle-tricked-snl-producers-by-giving-them-fake-monologue-during-dress-rehearsal/'
+    }
+  }
+
 })
 
 ```

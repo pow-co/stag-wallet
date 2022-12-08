@@ -17,8 +17,8 @@ const axios = require('axios')
 
 interface OnchainPostParams {
   app: string;
-  key: string;
-  val: any;
+  type: string;
+  content: any;
 }
 
 interface OnchainPostResult {
@@ -51,8 +51,8 @@ export async function findAll(params: any) {
 }
 
 interface FindOrCreate {
-  where: any;
-  defaults: any;
+  where: FindOne;
+  defaults: OnchainPostParams;
 }
 
 export async function findOrCreate(params: FindOrCreate) {
@@ -173,16 +173,12 @@ const onchain = (wallet?: Wallet) => {
 
       const message = {
         app: params.app,
-        event: params.key,
-        payload: params.val,
+        event: params.type,
+        payload: params.content,
         nonce: uuid()
       }
 
-      console.log('onchain.publish.message', message)
-
       const txid: any = await actor.publishMessage(message)
-
-      console.log('onchain.publish.message.result', { result: txid, message })
 
       const txhex = await fetch(txid)
 

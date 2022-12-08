@@ -19,8 +19,8 @@ import { onchain } from './src'
   
       const result = await onchain.post({
         app,
-        key: 'sku',
-        val: {
+        type: 'sku',
+        content: {
           sku: uuid()
         },
       })

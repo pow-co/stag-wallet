@@ -9,6 +9,8 @@ import { Wallet } from './wallet';
 
 import { run } from './run'
 
+import { broadcast } from 'powco'
+
 interface NewMessage {
   app: string;
   event: string;
@@ -91,7 +93,7 @@ export class Actor {
 
         const txhex = tx.serialize()
 
-        const result = await run.blockchain.broadcast(txhex)
+        const result = await broadcast(txhex)
 
         resolve(result)
 
