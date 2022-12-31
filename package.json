@@ -1,6 +1,6 @@
 {
   "name": "stag-wallet",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "",
   "repository": {
     "type": "git",
@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "@babel/runtime": "^7.20.1",
+    "@runonbitcoin/tokenkit": "^1.1.0",
     "anypay": "^0.1.0",
     "bignumber.js": "^9.1.0",
     "bip39": "^3.0.4",

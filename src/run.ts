@@ -40,3 +40,11 @@ export async function listTokenBalances(address: string): Promise<TokenBalancesR
   return data.data
 
 }
+
+export async function listTokenOwners(origin: string): Promise<any> {
+  
+    const { data } = await axios.get(`https://staging-backend.relayx.com/api/token/${origin}/owners`)
+  
+    return data.data
+  
+}

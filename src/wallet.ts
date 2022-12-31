@@ -14,7 +14,11 @@ import { Client } from './client'
 
 import * as blockchair from './blockchair'
 
+import { HDPrivateKey } from 'bsv'
+
 import axios from 'axios'
+
+const Run = require('run-sdk')
 
 export class UnsufficientFundsError extends Error {
   currency: string;
@@ -56,7 +60,6 @@ var assets = require('require-all')({
   map: (name) => name.toUpperCase()
 });
 
-import { FeeRates, getRecommendedFees } from './mempool.space'
 import log from './log'
 import { convertBalance } from './balance'
 
@@ -87,7 +90,8 @@ interface LoadCard {
 }
 
 export class Wallet {
-  cards: Card[]
+  cards: Card[];
+  _run: any;
 
   constructor(params: {
     cards: Card[]
@@ -99,6 +103,16 @@ export class Wallet {
 
     return new Wallet({ cards: cards.map(card => new Card(card)) })
 
+  }
+
+  get run() {
+    if (!this._run) {
+      this._run = new Run({
+        purse: new HDPrivateKey(this.cards[0].hdprivatekey).deriveChild(`m/44'/236'/0'/1/0`).privateKey.toWIF(),
+        owner: new HDPrivateKey(this.cards[0].hdprivatekey).deriveChild(`m/44'/236'/0'/2/0`).privateKey.toWIF()
+      })
+    }
+    return this._run
   }
 
   async balances(): Promise<Balance[]> {
@@ -333,6 +347,7 @@ export class Card {
   mnemonic: string;
   hdprivatekey: string;
   unspent: Utxo[];
+  run: any;
 
   constructor(params: {
     asset: string,

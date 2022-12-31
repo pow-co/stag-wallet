@@ -215,11 +215,11 @@ const onchain = (wallet?: Wallet) => {
 
       if (!result) {
 
-        await post(params.defaults)
+        result = await post(params.defaults)
 
       }
 
-      result = await findOne(params.where)
+      //result = await findOne(params.where)
 
       if (!result) {
 
