@@ -19,7 +19,7 @@ export async function main() {
             wallet
         })
     
-        const result = await actor.post(message, paymail)
+        const result = await actor.post({message, paymail, channel: 'powco.dev' })
     
         console.log(result)
 
