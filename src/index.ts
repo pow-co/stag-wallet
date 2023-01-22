@@ -14,4 +14,6 @@ export { protocol }
 export { boostpow } from './boostpow'
 export * as run from './run'
 export * as social from './social'
+import * as bitchat from './bitchat'
+export { bitchat }
 
