@@ -106,7 +106,7 @@ export class Actor {
   }
 
 
-  async post(message: string, paymail: string): Promise<{txid:string, txhex:string}> {
+  async post(params: { message: string, paymail: string, channel: string }): Promise<{txid:string, txhex:string}> {
 
 
       const keypair = new bsv.KeyPair().fromPrivKey(this.owner)
@@ -128,7 +128,7 @@ export class Actor {
       const {txhex, txid } = await this.publishOpReturn([
         "19HxigV4QyBv3tHpQVcUEQyq1pzZVdoAut", // B Prefix
          // Your Message
-        message,
+        params.message,
         "text/plain",
         "utf-8",
         "|",
@@ -136,16 +136,16 @@ export class Actor {
         "SET",
         "app",
         // Your app's name
-        "chat.pow.co",
+        "bitchat",
         "type",
         "message",
         // Can add more key-value pairs after this as needed: 
         "paymail", 
-        paymail,
+        params.paymail,
         "context",
         "channel",
         "channel",
-        "powco-development"
+        params.channel
       ])
 
       await axios.post('https://b.map.sv/ingest', {
