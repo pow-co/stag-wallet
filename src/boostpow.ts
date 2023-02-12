@@ -10,9 +10,10 @@ const axios = require('axios')
 interface NewBoostJob {
   content: string;
   difficulty: number;
-  category: string;
-  tag: string;
+  category?: string;
+  tag?: string;
   satoshis: number;
+  minerPubKeyHash?: string;
 }
 
 export async function boostpow(params: NewBoostJob, wallet?: Wallet) {
@@ -30,6 +31,11 @@ export async function boostpow(params: NewBoostJob, wallet?: Wallet) {
   if (params.tag) {
 
     newJob['tag'] = Buffer.from(params.tag).toString('hex')
+  }
+
+  if (params.minerPubKeyHash) {
+
+    newJob['minerPubKeyHash'] = params.minerPubKeyHash
   }
 
   const job = BoostPowJob.fromObject(newJob)
