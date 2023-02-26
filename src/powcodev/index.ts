@@ -4,6 +4,7 @@ import { loadWallet, Wallet } from '../wallet'
 import { Actor } from '../actor'
 
 interface DevIssue {
+  version: string;
   platform: string;
   org: string;
   repo: string;
@@ -76,6 +77,7 @@ async function Utxos() {
 }
 
 export async function buildContractForDevIssue({
+  version,
   platform,
   org,
   repo,
@@ -85,6 +87,7 @@ export async function buildContractForDevIssue({
 }: DevIssue) {
 
   const issue = new DevIssueContract(
+    Buffer.from(version).toString('hex'),
     Buffer.from(platform).toString('hex'),
     Buffer.from(org).toString('hex'),
     Buffer.from(repo).toString('hex'),

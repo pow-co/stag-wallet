@@ -6,6 +6,7 @@ import { deployDevIssueContract } from './'
 async function start() {
 
   const transaction = await deployDevIssueContract({
+    version: '0.0.1',
     platform: 'github',
     org: 'pow-co',
     repo: 'powco.dev',
