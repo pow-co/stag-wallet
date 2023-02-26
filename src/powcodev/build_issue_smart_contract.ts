@@ -9,10 +9,10 @@ async function start() {
     platform: 'github',
     org: 'pow-co',
     repo: 'powco.dev',
-    issue_number: 0n,
+    issue_number: '0',
     title: 'Automatically Post New DevIssue Instance On New Issue Created',
     description: 'Then index the issue in the database so no duplicates are created'
-  }) 
+  }, 10_000) 
 
   console.log(transaction)
 

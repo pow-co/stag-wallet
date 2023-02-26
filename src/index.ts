@@ -16,4 +16,6 @@ export * as run from './run'
 export * as social from './social'
 import * as bitchat from './bitchat'
 export { bitchat }
+import * as powcodev from './powcodev'
+export { powcodev }
 

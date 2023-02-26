@@ -78,3 +78,28 @@ const { txid, txhex, txo } = await onchain.findOrCreate({
 })
 
 ```
+
+### Powco.Dev
+
+```
+import { powcodev } from 'stag-wallet'
+
+const satoshis = 100_000_000
+
+const txid = await powcodev.deployDevIssueContract({
+
+  platform: 'github',
+
+  org: 'pow-co',
+
+  repo: 'powco.dev',
+
+  issue_id: 555555555,
+
+  title: '',
+
+  description: ''
+
+}, satoshis)
+
+```

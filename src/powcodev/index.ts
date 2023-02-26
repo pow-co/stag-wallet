@@ -7,7 +7,7 @@ interface DevIssue {
   platform: string;
   org: string;
   repo: string;
-  issue_number: bigint;
+  issue_number: string;
   title: string;
   description: string;
 }
@@ -62,8 +62,6 @@ export async function deployDevIssueContract(devIssue: DevIssue, satoshis: numbe
 
   const actor = new Actor({ wallet })
 
-  console.log("ACTOR", actor)
-
   const result = await actor.publishScript({
     script: issue.lockingScript,
     satoshis
@@ -83,14 +81,14 @@ export async function buildContractForDevIssue({
   repo,
   issue_number,
   title,
-  description
+  description,
 }: DevIssue) {
 
   const issue = new DevIssueContract(
-    0n,
+    Buffer.from(platform).toString('hex'),
     Buffer.from(org).toString('hex'),
     Buffer.from(repo).toString('hex'),
-    issue_number,
+    Buffer.from(issue_number).toString('hex'),
     Buffer.from(title).toString('hex'),
     Buffer.from(description).toString('hex')
   );
