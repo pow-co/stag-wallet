@@ -1,6 +1,8 @@
 
 import * as bsv from 'bsv-2'
 
+import * as bsv1 from 'bsv'
+
 import filepay from './filepay'
 
 import * as uuid from 'uuid'
@@ -74,6 +76,10 @@ export class Actor {
         }
       })
 
+      const pubkey = bsv.PubKey.fromPrivKey(this.purse)
+      
+      const address = new bsv.Address().fromPubKey(pubkey)
+
       const params = {
         pay:  {
           key: this.purse.toWif(),
@@ -98,6 +104,50 @@ export class Actor {
         resolve(result)
 
       })
+
+    })
+
+  }
+
+  publishScript({script, satoshis}: {script: bsv1.Script, satoshis: number }): Promise<string> {
+
+    return new Promise(async (resolve, reject) => {
+
+      const unspent = await this.wallet.cards[0].listUnspent()
+
+      const inputs = unspent.map(utxo => {
+
+        return {
+            txId: utxo.txid,
+            satoshis: utxo.value,
+            script: utxo.scriptPubKey,
+            outputIndex: utxo.vout,
+            required: false
+        }
+      })
+
+      console.log({ inputs })
+
+      const tx = new bsv1.Transaction()
+        .from(inputs)
+        .addOutput(new bsv1.Transaction.Output({
+          // get the locking script for `demo` instance
+          script,
+          satoshis,
+        }))
+        .change(this.identity)
+
+      tx.sign(this.purse.toWif())
+
+      const txhex = tx.serialize()
+
+      console.log('tx.signed.hex', txhex)
+
+      //const result = await broadcast(txhex)
+
+      //console.log('tx.broadcast.result', result)
+
+      resolve(txhex)
 
     })
 
