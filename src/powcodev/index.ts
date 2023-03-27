@@ -3,6 +3,8 @@ import { loadWallet, Wallet } from '../wallet'
 
 import { Actor } from '../actor'
 
+import { fetch } from 'powco'
+
 interface DevIssue {
   version: string;
   platform: string;
@@ -11,6 +13,7 @@ interface DevIssue {
   issue_number: string;
   title: string;
   description: string;
+  closed?: boolean;
 }
 
 var wallet: Wallet
@@ -32,6 +35,8 @@ export function loadArtifact(fileName) {
 const artifact = join(__dirname, 'DevIssue.json')
 
 const DevIssueContract = buildContractClass(loadArtifact(artifact))
+
+export { DevIssueContract }
 
 export async function createIssue() {
 
@@ -103,4 +108,29 @@ export async function buildContractForDevIssue({
 
 }
 
+export function parseDevIssueFromRawTransaction(txhex: string): DevIssue | null {
 
+  const contract = DevIssueContract.fromTransaction(txhex)
+
+  if (!contract) { return null }
+
+  const props: any = contract.scriptedConstructor.args.reduce((out, arg: any) => {
+
+    out[arg.name] = Buffer.from(arg.value, 'hex').toString('utf8')
+
+    return out
+  }, {})
+
+  let closed = contract.statePropsArgs.find(arg => arg.name === 'closed').value
+
+  return Object.assign(props, { closed })
+
+}
+
+export async function fetchDevIssue(txid: string): Promise<DevIssue> {
+
+  const txhex = await fetch(txid)
+
+  return parseDevIssueFromRawTransaction(txhex)
+  
+}

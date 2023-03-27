@@ -11,7 +11,7 @@ import { Wallet } from './wallet';
 
 import { run } from './run'
 
-import { broadcast } from 'powco'
+import { broadcast } from './whatsonchain'
 
 interface NewMessage {
   app: string;
@@ -143,11 +143,11 @@ export class Actor {
 
       console.log('tx.signed.hex', txhex)
 
-      //const result = await broadcast(txhex)
+      const result = await broadcast(txhex)
 
-      //console.log('tx.broadcast.result', result)
+      console.log('tx.broadcast.result', {txhex, txid: result})
 
-      resolve(txhex)
+      resolve(result)
 
     })
 
