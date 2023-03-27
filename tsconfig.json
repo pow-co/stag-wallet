@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
     "target": "es2020",
     "lib": [
       "es6", "ES2015", "ES2016", "ES2017"

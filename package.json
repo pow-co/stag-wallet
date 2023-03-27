@@ -1,6 +1,6 @@
 {
   "name": "stag-wallet",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "description": "",
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
     "nconf": "^0.12.0",
     "powco": "^1.2.2",
     "require-all": "^3.0.0",
+    "scrypt-ts": "^0.1.7",
     "scryptlib": "^2.1.10",
     "stag-wallet": "^0.6.0",
     "text-encoder": "^0.0.4",
